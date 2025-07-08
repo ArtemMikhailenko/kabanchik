@@ -1,24 +1,33 @@
 'use client'
 
-import { UserButton, useAuth } from '@clerk/nextjs'
-import { Button } from '@/components/ui/button'
+import { useEffect } from 'react'
+import { useAuth } from '@clerk/nextjs'
+import HeroSection from '@/components/sections/HeroSection'
+import HowItWorksSection from '@/components/sections/HowItWorks'
+import SearchSpecialistSection from '@/components/sections/SearchSpecialist'
+import TestimonialsSection from '@/components/sections/Testimonials'
+import FAQSection from '@/components/sections/FAQ'
+import PartnersSection from '@/components/sections/Partners'
+import Footer from '@/components/Footer/Footer'
 
-export default function Home() {
-  const { userId } = useAuth()
+export default function HomePage() {
+  const { userId, isLoaded } = useAuth()
+
+  useEffect(() => {
+    if (isLoaded && userId) {
+      fetch('/api/users', { method: 'POST' }).catch(console.error)
+    }
+  }, [isLoaded, userId])
 
   return (
-    <main className="container mx-auto p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Next.js Starter</h1>
-        {userId && <UserButton />}
-      </div>
-
-      <div className="space-y-4">
-        <p className="text-lg text-muted-foreground">
-          Добро пожаловать в современный Next.js стартер!
-        </p>
-        <Button>Начать работу</Button>
-      </div>
+    <main className="bg-[#55c4c8] pt-[60px]">
+      <HeroSection />
+      <HowItWorksSection />
+      <SearchSpecialistSection />
+      <TestimonialsSection />
+      <FAQSection />
+      <PartnersSection />
+      <Footer />
     </main>
   )
 }
