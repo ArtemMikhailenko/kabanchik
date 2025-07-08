@@ -108,7 +108,7 @@ export default function TestimonialsSection() {
   const paginationDots = Array.from({ length: 5 }, (_, i) => i)
 
   return (
-    <section className="pt-16 bg-white">
+    <section className="pt-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-12">
@@ -145,6 +145,7 @@ export default function TestimonialsSection() {
             }}
             onScroll={handleScroll}
           >
+            {/* TODO: update to shadcn carousel */}
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
@@ -164,6 +165,7 @@ export default function TestimonialsSection() {
         </div>
       </div>
 
+      {/* TODO: remove this */}
       <style jsx>{`
         .scrollbar-hide {
           -ms-overflow-style: none;

@@ -4,12 +4,13 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
+import { Role } from '@prisma/client'
 
 export default function HeroSection() {
   const router = useRouter()
   const { isSignedIn } = useUser()
 
-  const handleRoleSelection = (role: 'CUSTOMER' | 'SPECIALIST') => {
+  const handleRoleSelection = (role: Role) => {
     if (isSignedIn) {
       localStorage.setItem('selectedRole', role)
       router.push('/profile/setup')
@@ -20,11 +21,11 @@ export default function HeroSection() {
   }
 
   const handleLookingForSpecialist = () => {
-    handleRoleSelection('CUSTOMER')
+    handleRoleSelection(Role.CUSTOMER)
   }
 
   const handleBecomeSpecialist = () => {
-    handleRoleSelection('SPECIALIST')
+    handleRoleSelection(Role.SPECIALIST)
   }
 
   return (

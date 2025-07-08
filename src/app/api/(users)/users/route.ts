@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth, createClerkClient } from '@clerk/nextjs/server'
 import prisma from '@/lib/prisma'
+import { Role } from '@prisma/client'
 
-function validateRole(roleString: unknown): 'SPECIALIST' | 'CUSTOMER' | null {
-  if (roleString === 'SPECIALIST' || roleString === 'CUSTOMER') {
+function validateRole(roleString: unknown): Role | null {
+  if (roleString === Role.SPECIALIST || roleString === Role.CUSTOMER) {
     return roleString
   }
   return null
 }
 
 interface RequestBody {
-  role?: string
+  role?: Role
 }
 
 export async function POST(request: NextRequest) {
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 })
     }
 
-    let roleFromBody: string | null = null
+    let roleFromBody: Role | null = null
     try {
       const body: RequestBody = await request.json()
       roleFromBody = body.role || null
@@ -77,10 +78,10 @@ export async function POST(request: NextRequest) {
 
       let profileType = 'basic'
 
-      if (role === 'SPECIALIST') {
+      if (role === Role.SPECIALIST) {
         await tx.pro.create({ data: { userId: dbUser.id } })
         profileType = 'specialist'
-      } else if (role === 'CUSTOMER') {
+      } else if (role === Role.CUSTOMER) {
         await tx.customer.create({ data: { userId: dbUser.id } })
         profileType = 'customer'
       }

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { Search, Grid3X3, ChevronDown } from 'lucide-react'
 
-export default function Header() {
+export function Header() {
   return (
     <header className="w-full bg-transparent absolute">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,6 +28,7 @@ export default function Header() {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-400" />
               </div>
+              {/* TODO: update to shadcn input */}
               <input
                 type="text"
                 placeholder="Search for..."

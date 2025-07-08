@@ -2,51 +2,7 @@
 
 import React, { useState } from 'react'
 import { Plus, X } from 'lucide-react'
-
-const faqs = [
-  {
-    id: 1,
-    question:
-      'Lorem ipsum dolor sit amet consectetur. Vitae euismod sollicitudin morbi ultrices ac turpis tristique.',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 2,
-    question:
-      'Lorem ipsum dolor sit amet consectetur. Vitae euismod sollicitudin morbi ultrices ac turpis tristique.',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 3,
-    question:
-      'Lorem ipsum dolor sit amet consectetur. Vitae euismod sollicitudin morbi ultrices ac turpis tristique.',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 4,
-    question:
-      'Lorem ipsum dolor sit amet consectetur. Vitae euismod sollicitudin morbi ultrices ac turpis tristique.',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 5,
-    question:
-      'Lorem ipsum dolor sit amet consectetur. Vitae euismod sollicitudin morbi ultrices ac turpis tristique.',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 6,
-    question:
-      'Lorem ipsum dolor sit amet consectetur. Vitae euismod sollicitudin morbi ultrices ac turpis tristique.',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-]
+import { faqs } from './constants'
 
 export default function FAQSection() {
   const [openItems, setOpenItems] = useState<number[]>([1])
@@ -79,6 +35,7 @@ export default function FAQSection() {
                     const isOpen = openItems.includes(faq.id)
 
                     return (
+                      // TODO: update to shadcn accordion
                       <div key={faq.id} className="border-b border-gray-600">
                         <button
                           onClick={() => toggleItem(faq.id)}

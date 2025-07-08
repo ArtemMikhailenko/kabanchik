@@ -1,21 +1,23 @@
 'use client'
 
 import { SignUp } from '@clerk/nextjs'
+import { Role } from '@prisma/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function RegisterPage() {
+  // TODO: add nuqs to handle role selection
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [selectedRole, setSelectedRole] = useState<string | null>(null)
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null)
 
   useEffect(() => {
     const roleFromUrl = searchParams.get('role')
     const roleFromStorage = localStorage.getItem('selectedRole')
     const role = roleFromUrl || roleFromStorage
 
-    if (role && ['SPECIALIST', 'CUSTOMER'].includes(role)) {
-      setSelectedRole(role)
+    if (role && [Role.SPECIALIST, Role.CUSTOMER].includes(role as Role)) {
+      setSelectedRole(role as Role)
       localStorage.setItem('selectedRole', role)
     } else {
       router.push('/role-selection')
@@ -37,11 +39,11 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Registration as{' '}
-              {selectedRole === 'SPECIALIST' ? 'Specialist' : 'Customer'}
+              {selectedRole === Role.SPECIALIST ? 'Specialist' : 'Customer'}
             </h1>
             <p className="text-sm text-gray-600">
               Selected role:{' '}
-              {selectedRole === 'SPECIALIST' ? 'Specialist' : 'Customer'}
+              {selectedRole === Role.SPECIALIST ? 'Specialist' : 'Customer'}
             </p>
           </div>
 
@@ -72,8 +74,6 @@ export default function RegisterPage() {
             unsafeMetadata={{
               role: selectedRole,
             }}
-            redirectUrl="/"
-            afterSignUpUrl="/"
           />
 
           <div className="mt-6 text-center">
