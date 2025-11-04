@@ -73,29 +73,59 @@
       "loading": "Loading services..."
     },
     "testimonials": {
-      "title": "What Our Customers Say",
+      "title": "Testimonials",
       "customer1": {
-        "name": "Anna K.",
-        "text": "Found an excellent plumber in 15 minutes. Professional work at a reasonable price!"
+        "name": "Matt Cannon",
+        "position": "Head of Marketing",
+        "text": "Found an excellent plumber in 15 minutes. Professional work at a reasonable price! The service exceeded my expectations."
       },
       "customer2": {
-        "name": "Dmitry S.",
-        "text": "Ordered apartment cleaning. Everything was done perfectly. I recommend!"
+        "name": "Sarah Johnson",
+        "position": "Product Manager",
+        "text": "Ordered apartment cleaning. Everything was done perfectly. Very professional and attentive to details. I recommend!"
+      },
+      "customer3": {
+        "name": "David Wilson",
+        "position": "Design Director",
+        "text": "Great experience using this platform. Found a reliable electrician who fixed all the issues quickly and efficiently."
+      },
+      "customer4": {
+        "name": "Emma Davis",
+        "position": "UX Designer",
+        "text": "The best platform for finding specialists! Quick response, quality work, and reasonable prices. Will use again!"
+      },
+      "customer5": {
+        "name": "Michael Brown",
+        "position": "Frontend Developer",
+        "text": "Impressed with the professionalism of the specialists. My apartment renovation was completed on time and within budget."
+      },
+      "customer6": {
+        "name": "Anna Taylor",
+        "position": "UI/UX Designer",
+        "text": "Fast and convenient! Found a great specialist for furniture assembly. Everything was done perfectly in just a few hours."
       }
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "FREQUENTLY ASKED QUESTIONS",
       "q1": {
         "question": "How quickly can I find a specialist?",
-        "answer": "Usually within a few hours after posting a task"
+        "answer": "Usually within a few hours after posting a task. Many specialists respond within the first 30 minutes. You can compare offers and choose the best one."
       },
       "q2": {
-        "question": "Is it safe?",
-        "answer": "All specialists are verified. You can read reviews from other customers"
+        "question": "Is it safe to use the platform?",
+        "answer": "All specialists are verified. You can read reviews from other customers and check their ratings before making a decision. We ensure secure payments and provide guarantees."
       },
       "q3": {
         "question": "How much does it cost?",
-        "answer": "Registration is free. You only pay for the work of the specialist"
+        "answer": "Registration is free. You only pay for the work of the specialist. Prices are competitive as specialists compete for your order."
+      },
+      "q4": {
+        "question": "What if I'm not satisfied with the work?",
+        "answer": "We have a quality guarantee system. If you're not satisfied, contact our support team, and we'll help resolve the issue."
+      },
+      "q5": {
+        "question": "Can I cancel an order?",
+        "answer": "Yes, you can cancel an order before the specialist starts working. Cancellation terms depend on the agreement with the specialist."
       }
     },
     "partners": {

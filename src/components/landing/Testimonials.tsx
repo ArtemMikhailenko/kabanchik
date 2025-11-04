@@ -3,56 +3,18 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Star, User } from 'lucide-react'
-
-const testimonials = [
-  {
-    id: 1,
-    name: 'Matt Cannon',
-    position: 'Head of Marketing',
-    rating: 5,
-    text: 'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 2,
-    name: 'Sarah Johnson',
-    position: 'Product Manager',
-    rating: 5,
-    text: 'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 3,
-    name: 'David Wilson',
-    position: 'Design Director',
-    rating: 5,
-    text: 'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 4,
-    name: 'Emma Davis',
-    position: 'UX Designer',
-    rating: 5,
-    text: 'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 5,
-    name: 'Michael Brown',
-    position: 'Frontend Developer',
-    rating: 5,
-    text: 'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-  {
-    id: 6,
-    name: 'Anna Taylor',
-    position: 'UI/UX Designer',
-    rating: 5,
-    text: 'Lorem ipsum dolor sit amet consectetur. Ut egestas diam eget nulla mauris ut. Dolor nibh at sed ultrices imperdiet condimentum suspendisse gravida nisl. Sed mauris nibh imperdiet sit. Praesent nam suspendisse sit nulla vestibulum.',
-  },
-]
+import { useTranslations } from 'next-intl'
 
 const TestimonialCard = ({
-  testimonial,
+  name,
+  position,
+  text,
+  rating,
 }: {
-  testimonial: (typeof testimonials)[0]
+  name: string
+  position: string
+  text: string
+  rating: number
 }) => (
   <Card className="bg-white border border-[#e6e6e6] rounded-[24px] shadow-sm h-full max-h-[280px] p-[30px]">
     <CardContent className="">
@@ -62,19 +24,21 @@ const TestimonialCard = ({
         </div>
         <div className="flex flex-col gap-[6px] flex-1">
           <div className="flex gap-2 mb-3">
-            {[...Array(testimonial.rating)].map((_, i) => (
+            {[...Array(rating)].map((_, i) => (
               <Star key={i} className="w-6 h-6 text-[#ffa657] fill-current" />
             ))}
           </div>
           <p className="text-[#282a35] leading-[150%] mb-[6px] text-base">
-            {testimonial.text}
+            {text}
           </p>
 
           <div className="flex flex-col gap-1">
             <h4 className="font-bold text-[#282a35] text-xl leading-[150%]">
-              {testimonial.name}
+              {name}
             </h4>
-            <p className="text-base text-[#a3a3a3] leading-[150%]">{testimonial.position}</p>
+            <p className="text-base text-[#a3a3a3] leading-[150%]">
+              {position}
+            </p>
           </div>
         </div>
       </div>
@@ -83,8 +47,54 @@ const TestimonialCard = ({
 )
 
 export default function TestimonialsSection() {
+  const t = useTranslations('landing.testimonials')
   const [currentIndex, setCurrentIndex] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  const testimonials = [
+    {
+      id: 1,
+      name: t('customer1.name'),
+      position: t('customer1.position'),
+      rating: 5,
+      text: t('customer1.text'),
+    },
+    {
+      id: 2,
+      name: t('customer2.name'),
+      position: t('customer2.position'),
+      rating: 5,
+      text: t('customer2.text'),
+    },
+    {
+      id: 3,
+      name: t('customer3.name'),
+      position: t('customer3.position'),
+      rating: 5,
+      text: t('customer3.text'),
+    },
+    {
+      id: 4,
+      name: t('customer4.name'),
+      position: t('customer4.position'),
+      rating: 5,
+      text: t('customer4.text'),
+    },
+    {
+      id: 5,
+      name: t('customer5.name'),
+      position: t('customer5.position'),
+      rating: 5,
+      text: t('customer5.text'),
+    },
+    {
+      id: 6,
+      name: t('customer6.name'),
+      position: t('customer6.position'),
+      rating: 5,
+      text: t('customer6.text'),
+    },
+  ]
 
   const handleScroll = useCallback(() => {
     if (scrollRef.current) {
@@ -93,7 +103,7 @@ export default function TestimonialsSection() {
       const newIndex = Math.round(scrollLeft / cardWidth)
       setCurrentIndex(Math.min(newIndex, testimonials.length - 1))
     }
-  }, [])
+  }, [testimonials.length])
 
   const goToSlide = useCallback((index: number) => {
     if (scrollRef.current) {
@@ -113,7 +123,7 @@ export default function TestimonialsSection() {
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl md:text-[64px] font-bold text-gray-900">
-              Testimonials
+              {t('title')}
             </h2>
 
             <div className="flex space-x-2">
@@ -145,14 +155,18 @@ export default function TestimonialsSection() {
             }}
             onScroll={handleScroll}
           >
-            {/* TODO: update to shadcn carousel */}
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
                 className="flex-shrink-0 max-w-[580px] ml-4 first:ml-0"
                 style={{ scrollSnapAlign: 'start' }}
               >
-                <TestimonialCard testimonial={testimonial} />
+                <TestimonialCard
+                  name={testimonial.name}
+                  position={testimonial.position}
+                  text={testimonial.text}
+                  rating={testimonial.rating}
+                />
               </div>
             ))}
           </div>

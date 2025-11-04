@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Plus, X } from 'lucide-react'
-import { faqs } from './constants'
+import { useTranslations } from 'next-intl'
 
 interface FAQSectionProps {
   backgroundColor?: string
@@ -10,12 +10,41 @@ interface FAQSectionProps {
   className?: string
 }
 
-export default function FAQSection({ 
+export default function FAQSection({
   backgroundColor = 'bg-[#ffd2aa]',
   showTitle = true,
-  className = ''
+  className = '',
 }: FAQSectionProps) {
+  const t = useTranslations('landing.faq')
   const [openItems, setOpenItems] = useState<number[]>([1])
+
+  const faqs = [
+    {
+      id: 1,
+      question: t('q1.question'),
+      answer: t('q1.answer'),
+    },
+    {
+      id: 2,
+      question: t('q2.question'),
+      answer: t('q2.answer'),
+    },
+    {
+      id: 3,
+      question: t('q3.question'),
+      answer: t('q3.answer'),
+    },
+    {
+      id: 4,
+      question: t('q4.question'),
+      answer: t('q4.answer'),
+    },
+    {
+      id: 5,
+      question: t('q5.question'),
+      answer: t('q5.answer'),
+    },
+  ]
 
   const toggleItem = (id: number) => {
     setOpenItems((prev) =>
@@ -28,15 +57,13 @@ export default function FAQSection({
       <div className={`${backgroundColor} py-16 rounded-t-[60px]`}>
         <div className="container mx-auto px-4">
           <div className="mx-auto">
-            <div className={`grid grid-cols-1 ${showTitle ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-12`}>
+            <div
+              className={`grid grid-cols-1 ${showTitle ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-12`}
+            >
               {showTitle && (
                 <div className="lg:col-span-1">
-                  <h2 className="text-3xl md:text-[56px] font-bold text-gray-900 leading-tight">
-                    FREQUENTLY
-                    <br />
-                    ASKED
-                    <br />
-                    QUESTIONS
+                  <h2 className="text-3xl md:text-[56px] font-bold text-gray-900 leading-tight whitespace-pre-line">
+                    {t('title')}
                   </h2>
                 </div>
               )}
