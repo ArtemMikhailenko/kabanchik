@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProfileHeader } from '@/components/profile/profile-header'
@@ -14,7 +14,7 @@ import { useProfile } from '@/hooks/useProfile'
 import { useWorkingSpecialists } from '@/hooks/useWorkingSpecialists'
 import type { Order } from '@/components/dashboard/order-card'
 
-export default function ProfilePage() {
+function ProfilePageContent() {
   const { profile, loading } = useProfile()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -167,7 +167,7 @@ export default function ProfilePage() {
           </TabsContent>
 
           <TabsContent value="order-history" className="mt-0 bg-white p-6 rounded-lg">
-            <AllOrdersTab 
+                        <AllOrdersTab 
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
@@ -175,5 +175,13 @@ export default function ProfilePage() {
         </Tabs>
       </div>
     </div>
+  )
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProfilePageContent />
+    </Suspense>
   )
 }

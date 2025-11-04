@@ -1,5 +1,7 @@
 'use client'
 
+import { Suspense } from 'react'
+
 import React, { useState, useEffect } from 'react'
 import { SearchResultsHeader } from '@/components/search/search-results-header'
 import { FilterTabs } from '@/components/search/filter-tabs'
@@ -14,7 +16,7 @@ interface Filter {
   label: string
 }
 
-export default function SearchResultsPage() {
+function SearchResultsPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
@@ -174,5 +176,13 @@ export default function SearchResultsPage() {
         showTitle={true}
       />
     </main>
+  )
+}
+
+export default function SearchResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchResultsPageContent />
+    </Suspense>
   )
 }

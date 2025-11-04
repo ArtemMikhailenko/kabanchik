@@ -1,11 +1,13 @@
 'use client'
 
+import { Suspense } from 'react'
+
 import { SignUp } from '@clerk/nextjs'
 import { Role } from '@prisma/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function RegisterPage() {
+function RegisterPageContent() {
   // TODO: add nuqs to handle role selection
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -103,5 +105,13 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegisterPageContent />
+    </Suspense>
   )
 }
