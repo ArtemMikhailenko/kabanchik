@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -11,6 +11,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+}
 
 const cities = [
   'Kyiv',
@@ -26,9 +33,42 @@ const cities = [
 ]
 
 export default function SearchSpecialistSection() {
+  const t = useTranslations('landing.searchSpecialist')
   const router = useRouter()
   const [serviceName, setServiceName] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loadingCategories, setLoadingCategories] = useState(true)
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories/hierarchical')
+        if (response.ok) {
+          const data = await response.json()
+          // Extract only parent categories from the response structure
+          const parentCategories: Category[] = []
+          if (data.categories) {
+            data.categories.forEach((parent: any) => {
+              parentCategories.push({
+                id: parent.id,
+                name: parent.title,
+                slug: parent.slug
+              })
+              // Don't add subcategories (services) to the select
+            })
+          }
+          setCategories(parentCategories)
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      } finally {
+        setLoadingCategories(false)
+      }
+    }
+
+    fetchCategories()
+  }, [])
 
   const handleSearch = () => {
     const searchParams = new URLSearchParams()
@@ -43,24 +83,29 @@ export default function SearchSpecialistSection() {
       <div className="container mx-auto px-4">
         <div className=" mx-auto text-center">
           <h2 className="text-3xl md:text-[64px] font-bold text-[#55c4c8] mb-12">
-            Look for a specialist in your city
+            {t('title')}
           </h2>
 
           <div className="flex flex-col md:flex-row gap-4 max-w-4xl  mx-auto">
             <div className="flex-1">
-              <Input
-                type="text"
-                placeholder="Name of service"
-                value={serviceName}
-                onChange={(e) => setServiceName(e.target.value)}
-                className="h-12 text-base rounded-full"
-              />
+              <Select value={serviceName} onValueChange={setServiceName}>
+                <SelectTrigger className="h-12 text-base rounded-full">
+                  <SelectValue placeholder={loadingCategories ? t('loading') : t('serviceName')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.slug}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex-1 ">
               <Select value={selectedCity} onValueChange={setSelectedCity}>
                 <SelectTrigger className="h-12 text-base">
-                  <SelectValue placeholder="City" />
+                  <SelectValue placeholder={t('city')} />
                 </SelectTrigger>
                 <SelectContent>
                   {cities.map((city) => (
@@ -76,7 +121,7 @@ export default function SearchSpecialistSection() {
               onClick={handleSearch}
               className="bg-[#ffa657] hover:bg-orange-500 text-black px-8 h-12 text-base font-medium rounded-full"
             >
-              Looking for a specialist
+              {t('searchButton')}
             </Button>
           </div>
         </div>

@@ -4,7 +4,17 @@ import React, { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { faqs } from './constants'
 
-export default function FAQSection() {
+interface FAQSectionProps {
+  backgroundColor?: string
+  showTitle?: boolean
+  className?: string
+}
+
+export default function FAQSection({ 
+  backgroundColor = 'bg-[#ffd2aa]',
+  showTitle = true,
+  className = ''
+}: FAQSectionProps) {
   const [openItems, setOpenItems] = useState<number[]>([1])
 
   const toggleItem = (id: number) => {
@@ -14,28 +24,29 @@ export default function FAQSection() {
   }
 
   return (
-    <section className=" bg-white">
-      <div className="bg-[#ffd2aa] py-16 rounded-t-[60px]">
+    <section className={`bg-white ${className}`}>
+      <div className={`${backgroundColor} py-16 rounded-t-[60px]`}>
         <div className="container mx-auto px-4">
-          <div className=" mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              <div className="lg:col-span-1">
-                <h2 className="text-3xl md:text-[56px] font-bold text-gray-900 leading-tight">
-                  FREQUENTLY
-                  <br />
-                  ASKED
-                  <br />
-                  QUESTIONS
-                </h2>
-              </div>
+          <div className="mx-auto">
+            <div className={`grid grid-cols-1 ${showTitle ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-12`}>
+              {showTitle && (
+                <div className="lg:col-span-1">
+                  <h2 className="text-3xl md:text-[56px] font-bold text-gray-900 leading-tight">
+                    FREQUENTLY
+                    <br />
+                    ASKED
+                    <br />
+                    QUESTIONS
+                  </h2>
+                </div>
+              )}
 
-              <div className="lg:col-span-2">
+              <div className={showTitle ? 'lg:col-span-2' : 'lg:col-span-1'}>
                 <div className="space-y-4">
                   {faqs.map((faq) => {
                     const isOpen = openItems.includes(faq.id)
 
                     return (
-                      // TODO: update to shadcn accordion
                       <div key={faq.id} className="border-b border-gray-600">
                         <button
                           onClick={() => toggleItem(faq.id)}

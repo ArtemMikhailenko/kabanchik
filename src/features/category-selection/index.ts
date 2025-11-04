@@ -1,0 +1,5 @@
+export { useCategorySelection } from './hooks/useCategorySelection'
+export { CategoryGrid } from './components/CategoryGrid'
+export { SubcategoryGrid } from './components/SubcategoryGrid'
+export { CategorySelectionHeader } from './components/CategorySelectionHeader'
+export type { Category, CategorySelectionState } from './types'

@@ -10,7 +10,7 @@ export default function RoleSelectionPage() {
   const handleRoleSelect = (role: 'SPECIALIST' | 'CUSTOMER') => {
     localStorage.setItem('selectedRole', role)
 
-    router.push(`/register?role=${role}`)
+    router.push(`/auth/register?role=${role}`)
   }
 
   return (

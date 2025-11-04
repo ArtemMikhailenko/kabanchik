@@ -20,7 +20,7 @@ export default function RegisterPage() {
       setSelectedRole(role as Role)
       localStorage.setItem('selectedRole', role)
     } else {
-      router.push('/role-selection')
+      router.push('/auth/role-selection')
     }
   }, [searchParams, router])
 
@@ -33,26 +33,26 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Registration as{' '}
-              {selectedRole === Role.SPECIALIST ? 'Specialist' : 'Customer'}
-            </h1>
-            <p className="text-sm text-gray-600">
-              Selected role:{' '}
-              {selectedRole === Role.SPECIALIST ? 'Specialist' : 'Customer'}
-            </p>
-          </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 pt-24">
+      <div className="w-full max-w-md mx-auto">
+        <div className="text-center mb-6 px-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Registration as{' '}
+            {selectedRole === Role.SPECIALIST ? 'Specialist' : 'Customer'}
+          </h1>
+          <p className="text-sm text-gray-600">
+            Selected role:{' '}
+            {selectedRole === Role.SPECIALIST ? 'Specialist' : 'Customer'}
+          </p>
+        </div>
 
+        <div className="flex justify-center">
           <SignUp
             appearance={{
               elements: {
                 formButtonPrimary:
                   'bg-orange-400 hover:bg-orange-500 text-sm normal-case',
-                card: 'shadow-none',
+                card: 'shadow-xl w-full',
                 headerTitle: 'hidden',
                 headerSubtitle: 'hidden',
                 socialButtonsBlockButton:
@@ -68,36 +68,37 @@ export default function RegisterPage() {
                 showOptionalFields: false,
               },
             }}
-            signInUrl="/sign-in"
+            signInUrl="/auth/sign-in"
             routing="path"
-            path="/register"
+            path="/auth/register"
+            redirectUrl="/auth/registration-thank-you"
             unsafeMetadata={{
               role: selectedRole,
             }}
           />
+        </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Already registered?{' '}
-              <button
-                onClick={() => router.push('/sign-in')}
-                className="text-orange-500 hover:text-orange-600 underline"
-              >
-                Sign in
-              </button>
-            </p>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Already registered?{' '}
+            <button
+              onClick={() => router.push('/auth/sign-in')}
+              className="text-orange-500 hover:text-orange-600 font-medium"
+            >
+              Sign in
+            </button>
+          </p>
 
-            <div className="mt-4">
-              <button
-                onClick={() => {
-                  localStorage.removeItem('selectedRole')
-                  router.push('/role-selection')
-                }}
-                className="text-sm text-gray-500 hover:text-gray-700 underline"
-              >
-                Change role selection
-              </button>
-            </div>
+          <div className="mt-3">
+            <button
+              onClick={() => {
+                localStorage.removeItem('selectedRole')
+                router.push('/auth/role-selection')
+              }}
+              className="text-sm text-gray-500 hover:text-gray-700 underline"
+            >
+              Change role selection
+            </button>
           </div>
         </div>
       </div>

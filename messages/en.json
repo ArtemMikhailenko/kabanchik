@@ -1,0 +1,170 @@
+{
+  "common": {
+    "categories": "Categories",
+    "search": "Search for...",
+    "login": "Log in",
+    "signup": "Sign up",
+    "profile": "Profile",
+    "logout": "Logout",
+    "myOrders": "My orders",
+    "viewProfile": "View Profile",
+    "accountSettings": "Account Settings",
+    "support": "Support",
+    "customer": "Customer",
+    "specialist": "Specialist",
+    "sending": "Sending..."
+  },
+  "categories": {
+    "title": "Categories of services",
+    "loading": "Loading categories..."
+  },
+  "search": {
+    "title": "Find a specialist",
+    "service": "Service",
+    "city": "City",
+    "date": "Date",
+    "description": "Task description",
+    "descriptionPlaceholder": "Describe your task in detail...",
+    "submitButton": "Find specialists",
+    "loading": "Loading..."
+  },
+  "footer": {
+    "aboutUs": "About us",
+    "contacts": "Contacts",
+    "faq": "Questions and answers",
+    "publicOffer": "Public offer",
+    "privacyPolicy": "Privacy policy",
+    "supportService": "Support service",
+    "howItWorks": "How it works",
+    "howToOrder": "How to order a service",
+    "benefits": "Benefits for companies",
+    "registerSpecialist": "How to register a sole proprietorship",
+    "guarantee": "Guarantee and security",
+    "followUs": "Follow us",
+    "allRightsReserved": "All Rights Reserved"
+  },
+  "landing": {
+    "hero": {
+      "title": "Find the Perfect Specialist for Any Task",
+      "subtitle": "Thousands of verified professionals ready to help you. Fast, reliable, affordable.",
+      "becomeSpecialist": "Become a Specialist",
+      "findSpecialist": "Find a Specialist"
+    },
+    "howItWorks": {
+      "title": "How do we work?",
+      "step1": {
+        "title": "Create an order",
+        "description": "Describe your task, set a budget and timeline. It's quick and easy!"
+      },
+      "step2": {
+        "title": "Choose a specialist",
+        "description": "Review offers from professionals, check their ratings and reviews."
+      },
+      "step3": {
+        "title": "Get it done",
+        "description": "Work with the specialist and pay only when you're satisfied with the result."
+      }
+    },
+    "searchSpecialist": {
+      "title": "Look for a specialist in your city",
+      "serviceName": "Name of service",
+      "city": "City",
+      "searchButton": "Find a specialist",
+      "loading": "Loading services..."
+    },
+    "testimonials": {
+      "title": "What Our Customers Say",
+      "customer1": {
+        "name": "Anna K.",
+        "text": "Found an excellent plumber in 15 minutes. Professional work at a reasonable price!"
+      },
+      "customer2": {
+        "name": "Dmitry S.",
+        "text": "Ordered apartment cleaning. Everything was done perfectly. I recommend!"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "question": "How quickly can I find a specialist?",
+        "answer": "Usually within a few hours after posting a task"
+      },
+      "q2": {
+        "question": "Is it safe?",
+        "answer": "All specialists are verified. You can read reviews from other customers"
+      },
+      "q3": {
+        "question": "How much does it cost?",
+        "answer": "Registration is free. You only pay for the work of the specialist"
+      }
+    },
+    "partners": {
+      "title": "Our Partners"
+    }
+  },
+  "specialist": {
+    "reviews": "reviews",
+    "positive": "positive",
+    "completedOrders": "Number of completed orders",
+    "jobOffer": "job offer",
+    "viewProfile": "view profile",
+    "services": "Services",
+    "reviewsTab": "Reviews",
+    "photosOfWorks": "Photos of the works",
+    "noReviewsYet": "No reviews yet",
+    "noPortfolioYet": "No portfolio items yet",
+    "verifiedInformation": "Verified information",
+    "customerSafety": "Customer safety",
+    "onlineNow": "Online now",
+    "qualityOfWork": "Quality of work:",
+    "courtesy": "Courtesy:",
+    "punctuality": "Punctuality:",
+    "reviewOnRequest": "Review on request:",
+    "yourReview": "Your review",
+    "overallAssessment": "Overall assessment:",
+    "writeReviewHere": "Write your review here",
+    "sendReview": "send a review"
+  },
+  "order": {
+    "views": "Views:",
+    "status": {
+      "open": "Waiting for a specialist",
+      "inProgress": "Order in progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "perform": "Perform:",
+    "orderDescription": "Order description",
+    "confidentialInformation": "Confidential information",
+    "confidentialText": "The exact address, contacts, etc. will be available only to the selected specialist during the execution of the order",
+    "workingOnOrder": "You are working on this order",
+    "orderCompleted": "Order completed",
+    "orderCancelled": "Order cancelled",
+    "waitingDecision": "Waiting for customer's decision",
+    "complain": "Complain",
+    "acceptOffer": "Accept",
+    "decline": "Decline",
+    "sendOffer": "Send offer"
+  },
+  "profile": {
+    "customer": "Customer",
+    "specialist": "Specialist",
+    "myOrders": "My orders",
+    "atWork": "At work",
+    "newOrder": "New Order",
+    "selectedSpecialists": "Selected Specialists",
+    "history": "Order History",
+    "activeOrders": "Active orders",
+    "viewDetails": "View Details",
+    "noOrdersYet": "No orders yet",
+    "noWorkingSpecialists": "No specialists currently working on your orders"
+  },
+  "review": {
+    "completeOrder": "Complete order",
+    "closeOrder": "close the order",
+    "sendReview": "send a review",
+    "leaveReview": "Leave a review for the specialist",
+    "rating": "Rating",
+    "comment": "Comment"
+  }
+}

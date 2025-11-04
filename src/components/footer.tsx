@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import {
@@ -10,6 +12,7 @@ import {
   Phone,
   Mail,
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 const socialLinks = [
   { icon: Facebook, href: '#', label: 'Facebook' },
@@ -28,6 +31,8 @@ const paymentMethods = [
 ]
 
 export default function Footer() {
+  const t = useTranslations('footer')
+  
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
@@ -37,14 +42,14 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">About us</h4>
+            <h4 className="text-lg font-semibold mb-4">{t('aboutUs')}</h4>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/contacts"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Contacts
+                  {t('contacts')}
                 </Link>
               </li>
               <li>
@@ -52,7 +57,7 @@ export default function Footer() {
                   href="/faq"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Questions and answers
+                  {t('faq')}
                 </Link>
               </li>
               <li>
@@ -60,7 +65,7 @@ export default function Footer() {
                   href="/offer"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Public offer
+                  {t('publicOffer')}
                 </Link>
               </li>
               <li>
@@ -68,7 +73,7 @@ export default function Footer() {
                   href="/privacy"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Privacy policy
+                  {t('privacyPolicy')}
                 </Link>
               </li>
               <li>
@@ -76,21 +81,21 @@ export default function Footer() {
                   href="/support"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Support service
+                  {t('supportService')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">How it works</h4>
+            <h4 className="text-lg font-semibold mb-4">{t('howItWorks')}</h4>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/how-to-order"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  How to order a service
+                  {t('howToOrder')}
                 </Link>
               </li>
               <li>
@@ -98,7 +103,7 @@ export default function Footer() {
                   href="/benefits"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Benefits for companies
+                  {t('benefits')}
                 </Link>
               </li>
               <li>
@@ -106,7 +111,7 @@ export default function Footer() {
                   href="/register-specialist"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  How to register a sole proprietorship
+                  {t('registerSpecialist')}
                 </Link>
               </li>
               <li>
@@ -114,14 +119,14 @@ export default function Footer() {
                   href="/guarantee"
                   className="text-sm text-gray-300 hover:text-white transition-colors"
                 >
-                  Guarantee and security
+                  {t('guarantee')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">Follow us</h4>
+            <h4 className="text-lg font-semibold mb-4">{t('followUs')}</h4>
             <div className="flex space-x-4 mb-6">
               {socialLinks.map((social, index) => {
                 const IconComponent = social.icon
@@ -169,7 +174,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-gray-400 mb-4 md:mb-0">
-              Copyright © 2024 Copyright | All Rights Reserved
+              Copyright © 2024 Copyright | {t('allRightsReserved')}
             </p>
 
             <div className="flex items-center space-x-4">

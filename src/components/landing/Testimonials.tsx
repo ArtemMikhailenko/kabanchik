@@ -54,27 +54,27 @@ const TestimonialCard = ({
 }: {
   testimonial: (typeof testimonials)[0]
 }) => (
-  <Card className="bg-white border border-gray-100 shadow-sm h-full">
-    <CardContent className="p-6">
-      <div className="flex items-start gap-4 mb-4">
-        <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
+  <Card className="bg-white border border-[#e6e6e6] rounded-[24px] shadow-sm h-full max-h-[280px] p-[30px]">
+    <CardContent className="">
+      <div className="flex items-start gap-[22px]">
+        <div className="w-20 h-20 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
           <User className="w-8 h-8 text-gray-400" />
         </div>
-        <div className="flex flex-col">
-          <div className="flex mb-2">
+        <div className="flex flex-col gap-[6px] flex-1">
+          <div className="flex gap-2 mb-3">
             {[...Array(testimonial.rating)].map((_, i) => (
-              <Star key={i} className="w-5 h-5 text-orange-400 fill-current" />
+              <Star key={i} className="w-6 h-6 text-[#ffa657] fill-current" />
             ))}
           </div>
-          <p className="text-gray-600 leading-relaxed mb-6 text-sm">
+          <p className="text-[#282a35] leading-[150%] mb-[6px] text-base">
             {testimonial.text}
           </p>
 
-          <div>
-            <h4 className="font-semibold text-gray-900 text-base">
+          <div className="flex flex-col gap-1">
+            <h4 className="font-bold text-[#282a35] text-xl leading-[150%]">
               {testimonial.name}
             </h4>
-            <p className="text-sm text-gray-500">{testimonial.position}</p>
+            <p className="text-base text-[#a3a3a3] leading-[150%]">{testimonial.position}</p>
           </div>
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function TestimonialsSection() {
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="flex-shrink-0 w-80 md:w-96 ml-4 first:ml-0"
+                className="flex-shrink-0 max-w-[580px] ml-4 first:ml-0"
                 style={{ scrollSnapAlign: 'start' }}
               >
                 <TestimonialCard testimonial={testimonial} />

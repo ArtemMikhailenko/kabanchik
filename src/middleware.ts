@@ -4,20 +4,32 @@ const isProtectedRoute = createRouteMatcher([
   '/dashboard(.*)',
   '/profile(.*)',
   '/admin(.*)',
+  '/order(.*)',
+  '/api/orders(.*)',
+  '/api/profile(.*)',
+  '/api/customer(.*)',
+  '/api/specialist(.*)',
 ])
 
 const isPublicRoute = createRouteMatcher([
   '/',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/register(.*)',
-  '/role-selection',
-  '/registration-success',
+  '/auth/sign-in(.*)',
+  '/auth/sign-up(.*)',
+  '/auth/register(.*)',
+  '/auth/role-selection',
+  '/auth/registration-success',
   '/api/webhooks(.*)',
   '/api/user/create',
+  '/api/users',
+  '/api/specialists(.*)',
+  '/categories(.*)',
+  '/search(.*)',
+  '/specialists(.*)',
+  '/order/create(.*)',
 ])
 
 export default clerkMiddleware(async (auth, req) => {
+  
   const sessionClaims = {
     metadata: async () => {
       const { userId } = await auth()
@@ -52,7 +64,7 @@ export default clerkMiddleware(async (auth, req) => {
       return redirectToSignIn()
     }
 
-    if (req.nextUrl.pathname.startsWith('/admin')) {
+    if (req.nextUrl.pathname.startsWith('/admin') || req.nextUrl.pathname.includes('/admin')) {
       const userMetadata = await sessionClaims.metadata()
 
       if (userMetadata.role !== 'ADMIN') {

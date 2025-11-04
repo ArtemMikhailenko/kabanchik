@@ -27,7 +27,7 @@ export default function HomePage() {
       <TestimonialsSection />
       <FAQSection />
       <PartnersSection />
-      <Footer />
+      
     </main>
   )
 }
