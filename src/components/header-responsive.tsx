@@ -17,6 +17,8 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  Menu,
+  X,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useProfile } from '@/hooks/useProfile'
@@ -29,7 +31,7 @@ export function Header() {
   const { profile } = useProfile()
   const { signOut } = useClerk()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) // (будет использовано после интеграции адаптивного меню)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeRole, setActiveRole] = useState<'CUSTOMER' | 'SPECIALIST'>(
     'CUSTOMER'
   )
@@ -86,13 +88,15 @@ export function Header() {
     <header className="w-full bg-transparent absolute top-0 left-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="text-2xl font-bold text-gray-900">
               LOGO
             </Link>
           </div>
 
-          <div className="flex items-center gap-4 flex-1 max-w-2xl mx-8">
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-4 flex-1 max-w-2xl mx-8">
             <Link href="/categories">
               <Button
                 variant="secondary"
@@ -115,7 +119,8 @@ export function Header() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Desktop Right Section */}
+          <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher />
 
             <SignedOut>
@@ -157,12 +162,12 @@ export function Header() {
                   />
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Desktop Dropdown Menu */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                     <div className="p-4 border-b border-gray-100">
                       <div className="flex items-center gap-3">
-                        <Avatar className="w-12 h-12">
+                        <Avatar className="w-10 h-10">
                           <AvatarImage src={avatarUrl} alt={userName} />
                           <AvatarFallback className="bg-gray-200 text-gray-600">
                             {userName.charAt(0).toUpperCase()}
@@ -172,26 +177,19 @@ export function Header() {
                           <div className="font-medium text-gray-900">
                             {userName}
                           </div>
+                          <div className="text-sm text-gray-500 capitalize">
+                            {activeRole.toLowerCase()}
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Current Role Display */}
-                    <div className="px-4 py-3 border-b border-gray-100">
-                      <div className="text-sm font-medium text-gray-900">
-                        {activeRole === 'CUSTOMER'
-                          ? t('customer')
-                          : t('specialist')}
-                      </div>
-                    </div>
-
-                    {/* Menu Items */}
                     <div className="py-2">
                       <button
                         onClick={() => handleProfileMenuClick('orders')}
                         className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
                       >
-                        <User size={16} />
+                        <Grid3X3 size={16} />
                         {t('myOrders')}
                       </button>
                       <button
@@ -238,7 +236,165 @@ export function Header() {
               </div>
             </SignedIn>
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden">
+            <div
+              className="fixed inset-0 z-40 bg-black bg-opacity-50"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-80 bg-white shadow-xl">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <span className="text-lg font-semibold text-gray-900">
+                  Menu
+                </span>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="py-4">
+                {/* Search Bar */}
+                <div className="px-4 mb-4">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Search className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder={t('search')}
+                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Categories Link */}
+                <Link
+                  href="/categories"
+                  className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Grid3X3 size={20} />
+                  {t('categories')}
+                </Link>
+
+                <SignedOut>
+                  <div className="px-4 py-4 space-y-3 border-t border-gray-200">
+                    <SignInButton>
+                      <Button
+                        variant="outline"
+                        className="w-full rounded-lg border-black"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {t('login')}
+                      </Button>
+                    </SignInButton>
+                    <Link href="/auth/role-selection">
+                      <Button
+                        className="w-full rounded-lg bg-[#ffa657] hover:bg-orange-500"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {t('signup')}
+                      </Button>
+                    </Link>
+                  </div>
+                </SignedOut>
+
+                <SignedIn>
+                  <div className="border-t border-gray-200">
+                    <div className="px-4 py-4">
+                      <div className="flex items-center gap-3 mb-4">
+                        <Avatar className="w-12 h-12">
+                          <AvatarImage src={avatarUrl} alt={userName} />
+                          <AvatarFallback className="bg-gray-200 text-gray-600">
+                            {userName.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium text-gray-900">
+                            {userName}
+                          </div>
+                          <div className="text-sm text-gray-500 capitalize">
+                            {activeRole.toLowerCase()}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <button
+                        onClick={() => {
+                          handleProfileMenuClick('orders')
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50"
+                      >
+                        <Grid3X3 size={20} />
+                        {t('myOrders')}
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleProfileMenuClick('view-profile')
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50"
+                      >
+                        <User size={20} />
+                        {t('viewProfile')}
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleProfileMenuClick('account-settings')
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50"
+                      >
+                        <Settings size={20} />
+                        {t('accountSettings')}
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleProfileMenuClick('support')
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50"
+                      >
+                        <HelpCircle size={20} />
+                        {t('support')}
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleProfileMenuClick('signout')
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 border-t border-gray-100"
+                      >
+                        <LogOut size={20} />
+                        {t('logout')}
+                      </button>
+                    </div>
+                  </div>
+                </SignedIn>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   )

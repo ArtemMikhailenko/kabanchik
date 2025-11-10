@@ -8,15 +8,12 @@ import SearchSpecialistSection from '@/components/landing/SearchSpecialist'
 import TestimonialsSection from '@/components/landing/Testimonials'
 import FAQSection from '@/components/landing/FAQ'
 import PartnersSection from '@/components/landing/Partners'
-import Footer from '@/components/footer'
 
 export default function HomePage() {
   const { userId, isLoaded } = useAuth()
-
+  // Removed automatic POST /api/users to avoid duplicate profile creation attempts.
   useEffect(() => {
-    if (isLoaded && userId) {
-      fetch('/api/users', { method: 'POST' }).catch(console.error)
-    }
+    // Intentionally left blank; profile creation now handled in registration flow.
   }, [isLoaded, userId])
 
   return (
@@ -27,7 +24,6 @@ export default function HomePage() {
       <TestimonialsSection />
       <FAQSection />
       <PartnersSection />
-      
     </main>
   )
 }

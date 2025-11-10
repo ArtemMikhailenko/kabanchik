@@ -5,39 +5,55 @@ import prisma from '@/lib/prisma'
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await auth()
-    
+
     console.log('Creating user profile for userId:', userId)
-    
+
     if (!userId) {
       console.log('No userId found - user not authenticated')
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    // Check if user already exists first (idempotent behavior)
+    const existingUser = await prisma.user.findUnique({
+      where: { clerkId: userId },
+    })
+
+    if (existingUser) {
+      console.log(
+        'User already exists - returning existing user (idempotent POST)'
+      )
       return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
+        {
+          message: 'User already exists',
+          user: {
+            id: existingUser.id,
+            email: existingUser.email,
+            name: existingUser.name,
+            role: existingUser.role,
+          },
+        },
+        { status: 200 }
       )
     }
 
-    const body = await req.json()
-    const { role } = body
+    // Only parse body / validate role if we actually need to create the user
+    let role: string | undefined
+    try {
+      const body = await req.json()
+      role = body?.role
+    } catch {
+      console.log('No JSON body supplied for new user creation')
+    }
 
     console.log('Received role:', role)
 
     if (!role || (role !== 'CUSTOMER' && role !== 'SPECIALIST')) {
-      console.log('Invalid role received:', role)
+      console.log('Invalid or missing role for new user creation:', role)
       return NextResponse.json(
-        { error: 'Invalid role. Must be CUSTOMER or SPECIALIST' },
+        {
+          error:
+            'Invalid role. Must be CUSTOMER or SPECIALIST when creating a new user',
+        },
         { status: 400 }
-      )
-    }
-
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { clerkId: userId }
-    })
-
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'User already exists' },
-        { status: 409 }
       )
     }
 
@@ -57,15 +73,16 @@ export async function POST(req: NextRequest) {
       firstName: user.firstName,
       lastName: user.lastName,
       fullName: user.fullName,
-      emailAddresses: user.emailAddresses.map(e => e.emailAddress)
+      emailAddresses: user.emailAddresses.map((e) => e.emailAddress),
     })
 
     // Create user in database
     const userEmail = user.emailAddresses[0]?.emailAddress || ''
-    const userName = user.firstName && user.lastName 
-      ? `${user.firstName} ${user.lastName}` 
-      : user.firstName || user.lastName || userEmail || 'Unknown'
-    
+    const userName =
+      user.firstName && user.lastName
+        ? `${user.firstName} ${user.lastName}`
+        : user.firstName || user.lastName || userEmail || 'Unknown'
+
     console.log('Creating user with name:', userName, 'email:', userEmail)
 
     const newUser = await prisma.user.create({
@@ -73,29 +90,29 @@ export async function POST(req: NextRequest) {
         clerkId: userId,
         email: userEmail,
         name: userName,
-        role: role as 'CUSTOMER' | 'SPECIALIST'
-      }
+        role: role as 'CUSTOMER' | 'SPECIALIST',
+      },
     })
 
     // Create role-specific profile
     if (role === 'CUSTOMER') {
       await prisma.customer.create({
         data: {
-          userId: newUser.id
-        }
+          userId: newUser.id,
+        },
       })
     } else if (role === 'SPECIALIST') {
       const pro = await prisma.pro.create({
         data: {
-          userId: newUser.id
-        }
+          userId: newUser.id,
+        },
       })
 
       // Create specialist profile
       await prisma.specialistProfile.create({
         data: {
-          proId: pro.id
-        }
+          proId: pro.id,
+        },
       })
     }
 
@@ -105,10 +122,9 @@ export async function POST(req: NextRequest) {
         id: newUser.id,
         email: newUser.email,
         name: newUser.name,
-        role: newUser.role
-      }
+        role: newUser.role,
+      },
     })
-
   } catch (error) {
     console.error('Error creating user profile:', error)
     return NextResponse.json(
@@ -118,15 +134,12 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT() {
   try {
     const { userId } = await auth()
-    
+
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // Get user info from Clerk to update name if needed
@@ -142,7 +155,7 @@ export async function PUT(req: NextRequest) {
 
     // Find user in database
     const existingUser = await prisma.user.findUnique({
-      where: { clerkId: userId }
+      where: { clerkId: userId },
     })
 
     if (!existingUser) {
@@ -174,8 +187,8 @@ export async function PUT(req: NextRequest) {
       where: { clerkId: userId },
       data: {
         name: userName,
-        email: clerkUser.emailAddresses[0]?.emailAddress || existingUser.email
-      }
+        email: clerkUser.emailAddresses[0]?.emailAddress || existingUser.email,
+      },
     })
 
     return NextResponse.json({
@@ -184,10 +197,9 @@ export async function PUT(req: NextRequest) {
         id: updatedUser.id,
         email: updatedUser.email,
         name: updatedUser.name,
-        role: updatedUser.role
-      }
+        role: updatedUser.role,
+      },
     })
-
   } catch (error) {
     console.error('Error updating user profile:', error)
     return NextResponse.json(

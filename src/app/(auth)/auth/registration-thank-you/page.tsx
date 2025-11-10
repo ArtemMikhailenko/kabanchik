@@ -19,21 +19,21 @@ export default function RegistrationThankYou() {
 
       try {
         console.log('Creating user profile with role:', userRole)
-        
+
         const response = await fetch('/api/users', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            role: userRole
-          })
+            role: userRole,
+          }),
         })
 
         const data = await response.json()
         console.log('API response:', data)
-        
-        if (response.ok) {
+
+        if (response.ok || response.status === 409) {
           console.log('User profile created successfully:', data)
           setProfileCreated(true)
         } else {
@@ -52,7 +52,7 @@ export default function RegistrationThankYou() {
   const handleContinue = () => {
     // Проверяем роль пользователя из localStorage
     const userRole = localStorage.getItem('selectedRole')
-    
+
     if (userRole === 'SPECIALIST') {
       // Для специалистов переходим на выбор категории
       window.location.href = '/category-selection'
@@ -71,12 +71,16 @@ export default function RegistrationThankYou() {
             <h1 className="text-5xl font-bold text-gray-900 mb-8 leading-tight">
               THANK YOU FOR REGISTERING
             </h1>
-            
+
             <p className="text-lg text-gray-800 mb-8 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing<br />
-              elit id venenatis pretium risus euismod dictum<br />
-              egestas orci netus feugiat ut egestas ut sagittis<br />
-              tincidunt phasellus elit etiam cursus orci in. Id sed<br />
+              Lorem ipsum dolor sit amet, consectetur adipiscing
+              <br />
+              elit id venenatis pretium risus euismod dictum
+              <br />
+              egestas orci netus feugiat ut egestas ut sagittis
+              <br />
+              tincidunt phasellus elit etiam cursus orci in. Id sed
+              <br />
               montes.
             </p>
 
@@ -86,7 +90,7 @@ export default function RegistrationThankYou() {
               </div>
             )}
 
-            <Button 
+            <Button
               onClick={handleContinue}
               disabled={isCreatingProfile}
               className="bg-[#ffa657] hover:bg-orange-500 text-gray-800 font-medium px-8 py-3 rounded-full text-base disabled:opacity-50"
@@ -97,13 +101,13 @@ export default function RegistrationThankYou() {
 
           {/* Иллюстрация справа */}
           <div className="absolute right-8 bottom-0 top-1/2 transform -translate-y-1/2">
-            <svg 
-              width="400" 
-              height="200" 
-              viewBox="0 0 400 200" 
+            <svg
+              width="400"
+              height="200"
+              viewBox="0 0 400 200"
               className="text-gray-700"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               strokeWidth="2"
             >
               {/* Первая фигура - руки держат стопку */}

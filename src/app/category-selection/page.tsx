@@ -1,21 +1,20 @@
-
 'use client'
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
-import { 
+import {
   useCategorySelection,
   CategoryGrid,
   SubcategoryGrid,
-  CategorySelectionHeader
+  CategorySelectionHeader,
 } from '@/features/category-selection'
 
 export default function CategorySelectionPage() {
   const router = useRouter()
   const { user, isLoaded } = useUser()
-  
+
   const {
     state,
     categories,
@@ -29,7 +28,7 @@ export default function CategorySelectionPage() {
     clearSelection,
     toggleSubcategory,
     toggleSelectAll,
-    setSearchTerm
+    setSearchTerm,
   } = useCategorySelection()
 
   // Проверяем аутентификацию и создаем пользователя в БД
@@ -37,13 +36,12 @@ export default function CategorySelectionPage() {
     if (isLoaded && !user) {
       router.push('/auth/role-selection')
     } else if (isLoaded && user) {
-      // Создаем пользователя в нашей БД если его еще нет
-      fetch('/api/users', { method: 'POST' }).catch(console.error)
+      // Removed POST /api/users duplicate call; profile creation handled during registration-thank-you.
     }
   }, [isLoaded, user, router])
 
   const handleCategorySelect = (categoryId: number) => {
-    const category = categories.find(cat => cat.id === categoryId)
+    const category = categories.find((cat) => cat.id === categoryId)
     if (category) {
       selectCategory(category)
     }
@@ -53,14 +51,21 @@ export default function CategorySelectionPage() {
     if (state.viewMode === 'categories' && state.selectedCategory) {
       // Если мы на странице категорий и выбрана категория - переходим к подкатегориям
       selectCategory(state.selectedCategory)
-    } else if (state.viewMode === 'subcategories' && allSelectedSubcategories.length > 0) {
+    } else if (
+      state.viewMode === 'subcategories' &&
+      allSelectedSubcategories.length > 0
+    ) {
       // Если мы на странице подкатегорий и выбраны подкатегории - завершаем процесс
       try {
-                // Подготавливаем данные для отправки
-        const selectedCategories = Object.keys(state.selectedSubcategoriesByCategory || {}).filter(
-          categoryName => (state.selectedSubcategoriesByCategory || {})[categoryName]?.length > 0
+        // Подготавливаем данные для отправки
+        const selectedCategories = Object.keys(
+          state.selectedSubcategoriesByCategory || {}
+        ).filter(
+          (categoryName) =>
+            (state.selectedSubcategoriesByCategory || {})[categoryName]
+              ?.length > 0
         )
-        
+
         // Отправляем данные на сервер для сохранения в профиль специалиста
         const response = await fetch('/api/specialist/categories', {
           method: 'POST',
@@ -69,26 +74,34 @@ export default function CategorySelectionPage() {
           },
           body: JSON.stringify({
             categories: selectedCategories,
-            subcategories: allSelectedSubcategories
-          })
+            subcategories: allSelectedSubcategories,
+          }),
         })
 
         if (response.ok) {
           const result = await response.json()
           console.log('Categories saved successfully:', result)
-          
+
           // Сохраняем в localStorage для совместимости
-          const selectedCategories = state.selectedSubcategoriesByCategory 
+          const selectedCategories = state.selectedSubcategoriesByCategory
             ? Object.keys(state.selectedSubcategoriesByCategory).filter(
-                categoryName => (state.selectedSubcategoriesByCategory || {})[categoryName]?.length > 0
+                (categoryName) =>
+                  (state.selectedSubcategoriesByCategory || {})[categoryName]
+                    ?.length > 0
               )
             : []
-          localStorage.setItem('selectedCategory', selectedCategories.join(', '))
-          localStorage.setItem('selectedSubcategories', JSON.stringify(allSelectedSubcategories))
-          
+          localStorage.setItem(
+            'selectedCategory',
+            selectedCategories.join(', ')
+          )
+          localStorage.setItem(
+            'selectedSubcategories',
+            JSON.stringify(allSelectedSubcategories)
+          )
+
           // Очищаем состояние выбора категорий после успешного сохранения
           clearSelection()
-          
+
           // Переходим на дашборд
           router.push('/dashboard')
         } else {
@@ -114,7 +127,6 @@ export default function CategorySelectionPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6 pt-[100px]">
       <div className="max-w-[1200px] mx-auto">
-     
         <CategorySelectionHeader
           viewMode={state.viewMode}
           selectedCategoryName={state.selectedCategory?.name}
@@ -129,7 +141,9 @@ export default function CategorySelectionPage() {
           <CategoryGrid
             categories={filteredCategories}
             selectedCategoryId={state.selectedCategory?.id || null}
-            selectedSubcategoriesByCategory={state.selectedSubcategoriesByCategory}
+            selectedSubcategoriesByCategory={
+              state.selectedSubcategoriesByCategory
+            }
             onCategorySelect={handleCategorySelect}
           />
         )}
@@ -151,7 +165,8 @@ export default function CategorySelectionPage() {
             onClick={handleContinue}
             disabled={
               (state.viewMode === 'categories' && !state.selectedCategory) ||
-              (state.viewMode === 'subcategories' && allSelectedSubcategories.length === 0)
+              (state.viewMode === 'subcategories' &&
+                allSelectedSubcategories.length === 0)
             }
             className="bg-[#55c4c8] hover:bg-[#4ab5ba] disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-16 py-4 rounded-full text-lg font-medium transition-all duration-300 min-w-[200px]"
           >
