@@ -31,39 +31,40 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden ">
-      <div className="relative z-10 container mx-auto px-4 pt-16 text-center">
+    <section className="relative min-h-[680px] flex items-start justify-center overflow-hidden max-h-[820px]">
+      <div className="relative z-10 container mx-auto px-4 pt-6 md:pt-10 lg:pt-12 pb-28 md:pb-40 lg:pb-44 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-[72px] font-bold text-gray-900 mb-8 leading-tight">
+          <h1 className="text-[36px] md:text-[60px] font-bold text-gray-900 mb-4 leading-tight">
             {t('title')}
           </h1>
-          <p className="text-xl text-gray-700 mb-8">
+          <p className="text-base md:text-lg text-gray-700 mb-5">
             {t('subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-[36px] justify-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center mb-8">
             <Button
               onClick={handleLookingForSpecialist}
-              className="bg-[#ffa657] hover:bg-orange-500 text-black px-8 py-6 rounded-full text-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="bg-[#ffa657] hover:bg-orange-500 text-black px-7 py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               {t('findSpecialist')}
             </Button>
             <Button
               onClick={handleBecomeSpecialist}
               variant="outline"
-              className="bg-white/90 hover:bg-white text-gray-900 border-white px-8 py-6 rounded-full text-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="bg-white/90 hover:bg-white text-gray-900 border-white px-7 py-5 rounded-full text-base md:text-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               {t('becomeSpecialist')}
             </Button>
           </div>
         </div>
+      </div>
 
-        <div className="relative bottom-[-20px] w-full">
-          <img
-            className="w-full max-w-7xl mx-auto"
-            src="/main/hero.png"
-            alt="Platform illustration"
-          />
-        </div>
+      {/* Иллюстрация закреплена к нижнему краю всей секции (а не внутреннего контейнера) */}
+      <div className="absolute inset-x-0 -bottom-6 z-0 pointer-events-none select-none">
+        <img
+          className="w-full max-w-7xl mx-auto h-auto"
+          src="/main/hero.png"
+          alt="Platform illustration"
+        />
       </div>
     </section>
   )

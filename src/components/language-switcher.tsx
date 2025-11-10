@@ -17,7 +17,10 @@ export default function LanguageSwitcher() {
   useEffect(() => {
     // Close dropdown when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -47,24 +50,32 @@ export default function LanguageSwitcher() {
         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#55c4c8] text-[#282a35] font-medium hover:bg-[#34979a] transition-colors"
       >
         {locale.toUpperCase()}
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-24 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-[101]">
+        <div className="absolute right-0 mt-2 w-28 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-[101]">
           <button
             onClick={() => switchLocale('en')}
             className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors ${
-              locale === 'en' ? 'bg-[#55c4c8] bg-opacity-10 text-[#55c4c8] font-medium' : 'text-gray-700'
+              locale === 'en'
+                ? 'bg-[#55c4c8]/15 text-gray-900 font-semibold'
+                : 'text-gray-700'
             }`}
+            aria-selected={locale === 'en'}
           >
             EN
           </button>
           <button
             onClick={() => switchLocale('ru')}
             className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors ${
-              locale === 'ru' ? 'bg-[#55c4c8] bg-opacity-10 text-[#55c4c8] font-medium' : 'text-gray-700'
+              locale === 'ru'
+                ? 'bg-[#55c4c8]/15 text-gray-900 font-semibold'
+                : 'text-gray-700'
             }`}
+            aria-selected={locale === 'ru'}
           >
             RU
           </button>

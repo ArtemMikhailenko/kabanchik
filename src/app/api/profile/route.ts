@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import prisma from '@/lib/prisma'
+import type { Prisma, Review, Role as PrismaRole } from '@prisma/client'
+
+type UserWithRelations = Prisma.UserGetPayload<{
+  include: {
+    pro: { include: { profile: true } }
+    customer: true
+    reviewsReceived: true
+  }
+}>
 
 interface UpdateProfileRequest {
   name?: string
@@ -21,23 +30,21 @@ export async function PUT(request: NextRequest) {
     }
 
     const body: UpdateProfileRequest = await request.json()
-    const { name, email, bio, avatar, city, birthDate, hourlyRate, skills } = body
+    const { name, email, bio, avatar, city, birthDate, hourlyRate, skills } =
+      body
 
     // Найти пользователя
     const user = await prisma.user.findUnique({
       where: { clerkId: userId },
-      include: { 
-        pro: { 
-          include: { profile: true } 
-        } 
-      }
+      include: {
+        pro: {
+          include: { profile: true },
+        },
+      },
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
     // Обновляем основные данные пользователя
@@ -49,8 +56,8 @@ export async function PUT(request: NextRequest) {
         bio: bio !== undefined ? bio : user.bio,
         avatar: avatar !== undefined ? avatar : user.avatar,
         ...(city !== undefined && { city }),
-        ...(birthDate !== undefined && { birthDate })
-      }
+        ...(birthDate !== undefined && { birthDate }),
+      },
     })
 
     // Если пользователь специалист, обновляем профиль специалиста
@@ -63,9 +70,12 @@ export async function PUT(request: NextRequest) {
           where: { proId: user.pro.id },
           data: {
             bio: bio !== undefined ? bio : specialistProfile.bio,
-            hourlyRate: hourlyRate !== undefined ? hourlyRate : specialistProfile.hourlyRate,
-            skills: skills !== undefined ? skills : specialistProfile.skills
-          }
+            hourlyRate:
+              hourlyRate !== undefined
+                ? hourlyRate
+                : specialistProfile.hourlyRate,
+            skills: skills !== undefined ? skills : specialistProfile.skills,
+          },
         })
       } else {
         // Создаем новый профиль если его нет
@@ -74,8 +84,8 @@ export async function PUT(request: NextRequest) {
             proId: user.pro.id,
             bio: bio || null,
             hourlyRate: hourlyRate || null,
-            skills: skills || []
-          }
+            skills: skills || [],
+          },
         })
       }
 
@@ -83,31 +93,32 @@ export async function PUT(request: NextRequest) {
         success: true,
         message: 'Profile updated successfully',
         user: updatedUser,
-        specialistProfile
+        specialistProfile,
       })
     }
 
     return NextResponse.json({
       success: true,
       message: 'User profile updated successfully',
-      user: updatedUser
+      user: updatedUser,
     })
-
   } catch (error) {
     console.error('Error updating profile:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Internal server error'
-    
+    const errorMessage =
+      error instanceof Error ? error.message : 'Internal server error'
+
     return NextResponse.json(
-      { 
+      {
         error: 'Internal server error',
-        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+        details:
+          process.env.NODE_ENV === 'development' ? errorMessage : undefined,
       },
       { status: 500 }
     )
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { userId } = await auth()
     if (!userId) {
@@ -115,50 +126,52 @@ export async function GET(request: NextRequest) {
     }
 
     // Найти пользователя со всеми связанными данными
-    let user: any = await prisma.user.findUnique({
+    let user: UserWithRelations | null = await prisma.user.findUnique({
       where: { clerkId: userId },
-      include: { 
-        pro: { 
-          include: { profile: true } 
+      include: {
+        pro: {
+          include: { profile: true },
         },
-        customer: true
-      }
-    }) as any
+        customer: true,
+        reviewsReceived: true,
+      },
+    })
 
     if (!user) {
-      // Автоматически создать пользователя в БД при первом заходе
+      // Автоматически создаем пользователя на основе Clerk через публичные данные
       try {
         const { createClerkClient } = await import('@clerk/nextjs/server')
-        const clerkClient = createClerkClient({
-          secretKey: process.env.CLERK_SECRET_KEY!,
+        const client = createClerkClient({
+          secretKey: process.env.CLERK_SECRET_KEY || '',
         })
-        const clerkUser = await clerkClient.users.getUser(userId)
-        const primaryEmail = clerkUser.emailAddresses.find(
-          (e) => e.id === clerkUser.primaryEmailAddressId
-        )?.emailAddress
-
-        const roleFromMetadata = (clerkUser.publicMetadata?.role || clerkUser.unsafeMetadata?.role) as
-          | 'SPECIALIST'
-          | 'CUSTOMER'
+        const clerkUser = await client.users.getUser(userId)
+        const primaryEmailObj = clerkUser.emailAddresses.find(
+          (addr) => addr.id === clerkUser.primaryEmailAddressId
+        )
+        const primaryEmail = primaryEmailObj?.emailAddress
+        const roleFromMetadata = (clerkUser.publicMetadata?.role ||
+          ((clerkUser as unknown as { unsafeMetadata?: unknown })
+            ?.unsafeMetadata as unknown as PrismaRole)) as
+          | PrismaRole
           | undefined
 
-        user = await prisma.user.create({
+        user = (await prisma.user.create({
           data: {
             clerkId: userId,
             email: primaryEmail || 'unknown@example.com',
             name: clerkUser.firstName || clerkUser.username || null,
-            role: roleFromMetadata as any,
+            ...(roleFromMetadata
+              ? { role: roleFromMetadata as PrismaRole }
+              : {}),
           },
           include: {
             pro: { include: { profile: true } },
             customer: true,
+            reviewsReceived: true,
           },
-        })
-      } catch (e) {
-        return NextResponse.json(
-          { error: 'User not found' },
-          { status: 404 }
-        )
+        })) as UserWithRelations
+      } catch {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 })
       }
     }
 
@@ -171,7 +184,7 @@ export async function GET(request: NextRequest) {
             isVerified: false,
             isActive: true,
           },
-          include: { profile: true }
+          include: { profile: true },
         })
         // Create minimal specialist profile if missing
         if (!pro.profile) {
@@ -180,41 +193,56 @@ export async function GET(request: NextRequest) {
               proId: pro.id,
               bio: user.bio || null,
               skills: [],
-            }
+            },
           })
         }
         // Refresh user snapshot with relations
-        user = await prisma.user.findUnique({
+        user = (await prisma.user.findUnique({
           where: { id: user.id },
-          include: { pro: { include: { profile: true } }, customer: true }
-        })
+          include: {
+            pro: { include: { profile: true } },
+            customer: true,
+            reviewsReceived: true,
+          },
+        })) as UserWithRelations
       }
       if (user.role === 'CUSTOMER' && !user.customer) {
         await prisma.customer.create({
           data: {
             userId: user.id,
             isActive: true,
-          }
+          },
         })
-        user = await prisma.user.findUnique({
+        user = (await prisma.user.findUnique({
           where: { id: user.id },
-          include: { pro: { include: { profile: true } }, customer: true }
-        })
+          include: {
+            pro: { include: { profile: true } },
+            customer: true,
+            reviewsReceived: true,
+          },
+        })) as UserWithRelations
       }
     } catch (e) {
       console.warn('Profile GET: failed to bootstrap role-specific record', e)
     }
 
-  // Вычисляем статистику отзывов
-  const reviews = (user as any).reviewsReceived || []
+    // Вычисляем статистику отзывов
+    const reviews: Review[] = user.reviewsReceived || []
     const reviewsCount = reviews.length
-    const averageRating = reviewsCount > 0 
-      ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewsCount 
-      : 0
-    const positiveReviews = reviews.filter((review: any) => review.isPositive).length
-    const positivePercentage = reviewsCount > 0 
-      ? Math.round((positiveReviews / reviewsCount) * 100) 
-      : 100
+    const averageRating =
+      reviewsCount > 0
+        ? reviews.reduce(
+            (sum: number, review: Review) => sum + review.rating,
+            0
+          ) / reviewsCount
+        : 0
+    const positiveReviews = reviews.filter(
+      (review: Review) => review.isPositive
+    ).length
+    const positivePercentage =
+      reviewsCount > 0
+        ? Math.round((positiveReviews / reviewsCount) * 100)
+        : 100
 
     return NextResponse.json({
       success: true,
@@ -235,23 +263,28 @@ export async function GET(request: NextRequest) {
         averageRating: Number(averageRating.toFixed(1)),
         positivePercentage,
         // Добавляем данные тарифного плана для специалистов
-        subscription: user.pro?.profile ? {
-          plan: (user.pro.profile as any).subscriptionPlan || 'Basic',
-          validUntil: (user.pro.profile as any).subscriptionValidUntil 
-            ? new Date((user.pro.profile as any).subscriptionValidUntil).toLocaleDateString() 
-            : '12 December 2024'
-        } : { plan: 'Basic', validUntil: 'N/A' }
-      }
+        subscription: user.pro?.profile
+          ? {
+              plan: user.pro.profile.subscriptionPlan || 'Basic',
+              validUntil: user.pro.profile.subscriptionValidUntil
+                ? new Date(
+                    user.pro.profile.subscriptionValidUntil
+                  ).toLocaleDateString()
+                : '12 December 2024',
+            }
+          : { plan: 'Basic', validUntil: 'N/A' },
+      },
     })
-
   } catch (error) {
     console.error('Error fetching profile:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Internal server error'
-    
+    const errorMessage =
+      error instanceof Error ? error.message : 'Internal server error'
+
     return NextResponse.json(
-      { 
+      {
         error: 'Internal server error',
-        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+        details:
+          process.env.NODE_ENV === 'development' ? errorMessage : undefined,
       },
       { status: 500 }
     )
