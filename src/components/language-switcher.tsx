@@ -47,7 +47,7 @@ export default function LanguageSwitcher() {
           console.log('Language button clicked, current state:', isOpen)
           setIsOpen(!isOpen)
         }}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#55c4c8] text-[#282a35] font-medium hover:bg-[#34979a] transition-colors"
+        className="flex items-center gap-2 px-2 py-2 rounded-lg bg-[#55c4c8] text-[#282a35] font-medium hover:bg-[#34979a] transition-colors"
       >
         {locale.toUpperCase()}
         <ChevronDown

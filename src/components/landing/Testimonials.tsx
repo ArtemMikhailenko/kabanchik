@@ -16,9 +16,33 @@ const TestimonialCard = ({
   text: string
   rating: number
 }) => (
-  <Card className="bg-white border border-[#e6e6e6] rounded-[24px] shadow-sm h-full max-h-[280px] p-[30px]">
-    <CardContent className="">
-      <div className="flex items-start gap-[22px]">
+  <Card className="bg-white border border-[#e6e6e6] rounded-xl md:rounded-[24px] shadow-sm h-full px-4 pt-4 pb-6 md:p-[30px]">
+    <CardContent className="p-0">
+      {/* Mobile layout - vertical */}
+      <div className="flex flex-col md:hidden gap-4">
+        <div className="w-20 h-20 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
+          <User className="w-8 h-8 text-gray-400" />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <div className="flex gap-2">
+            {[...Array(rating)].map((_, i) => (
+              <Star key={i} className="w-6 h-6 text-[#ffa657] fill-current" />
+            ))}
+          </div>
+          <p className="text-[#282a35] leading-[150%] text-sm">{text}</p>
+          <div className="flex flex-col gap-1 mt-[2px]">
+            <h4 className="font-bold text-[#282a35] text-xl leading-[150%]">
+              {name}
+            </h4>
+            <p className="text-base text-[#a3a3a3] leading-[150%]">
+              {position}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop layout - horizontal */}
+      <div className="hidden md:flex items-start gap-[22px]">
         <div className="w-20 h-20 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
           <User className="w-8 h-8 text-gray-400" />
         </div>
@@ -121,12 +145,12 @@ export default function TestimonialsSection() {
     <section className="pt-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className="text-3xl md:text-[64px] font-bold text-gray-900">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-[64px] font-bold text-gray-900 mb-6 md:mb-0">
               {t('title')}
             </h2>
 
-            <div className="flex space-x-2">
+            <div className="hidden md:flex space-x-2">
               {paginationDots.map((_, index) => (
                 <button
                   key={index}
@@ -142,23 +166,26 @@ export default function TestimonialsSection() {
         </div>
       </div>
 
-      <div className="container mx-auto">
-        <div className="max-w-6xl mx-auto">
+      <div className="md:container md:mx-auto">
+        <div className="md:max-w-6xl md:mx-auto">
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 -mr-4"
+            className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
             style={{
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch',
-              marginRight: 'calc(-50vw + 50%)',
-              paddingRight: 'calc(50vw - 50%)',
+              scrollPaddingLeft: '16px',
             }}
             onScroll={handleScroll}
           >
+            <div
+              className="w-4 flex-shrink-0 md:hidden"
+              style={{ scrollSnapAlign: 'none' }}
+            />
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="flex-shrink-0 max-w-[580px] ml-4 first:ml-0"
+                className="flex-shrink-0 w-[calc(100vw-80px)] md:max-w-[580px]"
                 style={{ scrollSnapAlign: 'start' }}
               >
                 <TestimonialCard
@@ -170,12 +197,30 @@ export default function TestimonialsSection() {
               </div>
             ))}
           </div>
+
+          {/* Mobile pagination dots */}
+          <div className="flex md:hidden justify-center space-x-2 mt-8 mb-8">
+            {paginationDots.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                  index === currentIndex ? 'bg-teal-400' : 'bg-gray-300'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 flex justify-end">
-        <div className="max-w-6xl  ">
-          <img src="/main/testimonial.png" alt="" className="max-w-[514px]" />
+      <div className="container mx-auto px-4 flex justify-center md:justify-end relative z-10 mb-[-20px] md:mb-0">
+        <div className="max-w-6xl">
+          <img
+            src="/main/testimonial.png"
+            alt=""
+            className="max-w-[380px] md:max-w-[514px] w-full"
+          />
         </div>
       </div>
 

@@ -26,7 +26,7 @@ export default function HowItWorksSection() {
   ]
 
   return (
-    <section className="py-16 bg-white rounded-t-[60px]">
+    <section className="py-16 bg-white rounded-t-none sm:rounded-t-[40px] md:rounded-t-[60px]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-[64px] font-bold text-gray-900 mb-12">

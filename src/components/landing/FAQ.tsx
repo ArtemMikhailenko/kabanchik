@@ -16,7 +16,8 @@ export default function FAQSection({
   className = '',
 }: FAQSectionProps) {
   const t = useTranslations('landing.faq')
-  const [openItems, setOpenItems] = useState<number[]>([1])
+  const [openItems, setOpenItems] = useState<number[]>([1, 2, 3, 4, 5])
+  const [showAll, setShowAll] = useState(false)
 
   const faqs = [
     {
@@ -44,6 +45,31 @@ export default function FAQSection({
       question: t('q5.question'),
       answer: t('q5.answer'),
     },
+    {
+      id: 6,
+      question: t('q6.question'),
+      answer: t('q6.answer'),
+    },
+    {
+      id: 7,
+      question: t('q7.question'),
+      answer: t('q7.answer'),
+    },
+    {
+      id: 8,
+      question: t('q8.question'),
+      answer: t('q8.answer'),
+    },
+    {
+      id: 9,
+      question: t('q9.question'),
+      answer: t('q9.answer'),
+    },
+    {
+      id: 10,
+      question: t('q10.question'),
+      answer: t('q10.answer'),
+    },
   ]
 
   const toggleItem = (id: number) => {
@@ -54,7 +80,9 @@ export default function FAQSection({
 
   return (
     <section className={`bg-white ${className}`}>
-      <div className={`${backgroundColor} py-16 rounded-t-[60px]`}>
+      <div
+        className={`${backgroundColor} py-16 rounded-t-[30px] md:rounded-t-[60px]`}
+      >
         <div className="container mx-auto px-4">
           <div className="mx-auto">
             <div
@@ -70,7 +98,7 @@ export default function FAQSection({
 
               <div className={showTitle ? 'lg:col-span-2' : 'lg:col-span-1'}>
                 <div className="space-y-4">
-                  {faqs.map((faq) => {
+                  {(showAll ? faqs : faqs.slice(0, 5)).map((faq) => {
                     const isOpen = openItems.includes(faq.id)
 
                     return (
@@ -107,6 +135,17 @@ export default function FAQSection({
                     )
                   })}
                 </div>
+                {faqs.length > 5 && (
+                  <div className="mt-6">
+                    <button
+                      className="px-8 py-3 rounded-full bg-white text-black font-medium shadow-md hover:shadow-lg transition-all duration-300 border-2 border-gray-200 hover:border-gray-300"
+                      onClick={() => setShowAll((s) => !s)}
+                      aria-expanded={showAll}
+                    >
+                      {showAll ? t('showLess') : t('showMore')}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

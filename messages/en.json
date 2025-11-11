@@ -45,35 +45,36 @@
   },
   "landing": {
     "hero": {
-      "title": "Find the Perfect Specialist for Any Task",
-      "subtitle": "Thousands of verified professionals ready to help you. Fast, reliable, affordable.",
+      "title": "People help people.",
+      "subtitle": "Together we make life better.\nFind trusted specialists\nor offer your services",
       "becomeSpecialist": "Become a Specialist",
       "findSpecialist": "Find a Specialist"
     },
     "howItWorks": {
-      "title": "How do we work?",
+      "title": "How it works",
       "step1": {
-        "title": "Create an order",
-        "description": "Describe your task, set a budget and timeline. It's quick and easy!"
+        "title": "Post an order or an offer",
+        "description": "Create a task or publish a service so that people can find you."
       },
       "step2": {
-        "title": "Choose a specialist",
-        "description": "Review offers from professionals, check their ratings and reviews."
+        "title": "Find each other",
+        "description": "Clients receive responses from specialists or choose a performer from the catalog, and specialists get new orders."
       },
       "step3": {
-        "title": "Get it done",
-        "description": "Work with the specialist and pay only when you're satisfied with the result."
+        "title": "Evaluate the result",
+        "description": "After completion, both sides leave a review — ratings help find the best specialists and customers."
       }
     },
     "searchSpecialist": {
-      "title": "Look for a specialist in your city",
-      "serviceName": "Name of service",
+      "title": "Search for a specialist",
+      "serviceName": "Service search",
       "city": "City",
       "searchButton": "Find a specialist",
       "loading": "Loading services..."
     },
     "testimonials": {
       "title": "Testimonials",
+      "placeholder": "During the test period: your real review will appear here",
       "customer1": {
         "name": "Matt Cannon",
         "position": "Head of Marketing",
@@ -106,27 +107,49 @@
       }
     },
     "faq": {
-      "title": "FREQUENTLY ASKED QUESTIONS",
+      "title": "Frequently asked questions",
       "q1": {
-        "question": "How quickly can I find a specialist?",
-        "answer": "Usually within a few hours after posting a task. Many specialists respond within the first 30 minutes. You can compare offers and choose the best one."
+        "question": "How does Services-helper work?",
+        "answer": "Post an order or an offer, wait for responses from specialists and choose a performer from those who responded or from top specialists in the category. After the order is completed, leave a review — it helps the community grow and find reliable partners."
       },
       "q2": {
-        "question": "Is it safe to use the platform?",
-        "answer": "All specialists are verified. You can read reviews from other customers and check their ratings before making a decision. We ensure secure payments and provide guarantees."
+        "question": "Do I have to pay to use the site?",
+        "answer": "For clients — the platform is free to use. For specialists — there are free features and paid subscriptions with advanced promotion tools."
       },
       "q3": {
-        "question": "How much does it cost?",
-        "answer": "Registration is free. You only pay for the work of the specialist. Prices are competitive as specialists compete for your order."
+        "question": "What’s included in a Premium account?",
+        "answer": "Premium helps specialists stand out and get more orders. It includes: priority placement in search; ‘Sponsored’ label; ability to add links to website and social media; twice as many portfolio photos; participation in Services-helper campaigns."
       },
       "q4": {
-        "question": "What if I'm not satisfied with the work?",
-        "answer": "We have a quality guarantee system. If you're not satisfied, contact our support team, and we'll help resolve the issue."
+        "question": "How do payments happen between client and specialist?",
+        "answer": "The platform doesn’t process payments — parties settle directly. Services-helper charges no commission and isn’t responsible for the payment."
       },
       "q5": {
-        "question": "Can I cancel an order?",
-        "answer": "Yes, you can cancel an order before the specialist starts working. Cancellation terms depend on the agreement with the specialist."
-      }
+        "question": "How can I improve my rating?",
+        "answer": "Complete orders, get good reviews, and keep your profile up to date. The higher your activity and rating, the more orders you receive."
+      },
+      "q6": {
+        "question": "Is Services-helper safe to use?",
+        "answer": "Yes. We moderate content, process reports, and protect user data. All reviews are published openly to maintain transparency and trust."
+      },
+      "q7": {
+        "question": "What if I have an issue or complaint?",
+        "answer": "Use the ‘Report’ button on any profile page or email legal@services-helper.com — we review submissions within 15 working days."
+      },
+      "q8": {
+        "question": "Can I delete my profile?",
+        "answer": "Yes. After deletion, some technical data (e.g., ID and transaction history) may be stored for up to 6 months by law, then automatically deleted."
+      },
+      "q9": {
+        "question": "What is the referral program?",
+        "answer": "Invite other specialists via your personal link and get a discount on a subscription. Terms and discount size may change to keep the program flexible."
+      },
+      "q10": {
+        "question": "How can I add links or showcase my work?",
+        "answer": "Premium users can add active links to their websites and social profiles and upload more photos of completed projects, subject to site rules and content moderation policies."
+      },
+      "showMore": "Show more",
+      "showLess": "Show less"
     },
     "partners": {
       "title": "Our Partners"
