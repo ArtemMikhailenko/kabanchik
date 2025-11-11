@@ -123,7 +123,10 @@ export default function TestimonialsSection() {
   const handleScroll = useCallback(() => {
     if (scrollRef.current) {
       const scrollLeft = scrollRef.current.scrollLeft
-      const cardWidth = 350
+      const firstCard = scrollRef.current.querySelector(
+        '[data-card]'
+      ) as HTMLElement
+      const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 596 // card width + gap
       const newIndex = Math.round(scrollLeft / cardWidth)
       setCurrentIndex(Math.min(newIndex, testimonials.length - 1))
     }
@@ -131,7 +134,10 @@ export default function TestimonialsSection() {
 
   const goToSlide = useCallback((index: number) => {
     if (scrollRef.current) {
-      const cardWidth = 350
+      const firstCard = scrollRef.current.querySelector(
+        '[data-card]'
+      ) as HTMLElement
+      const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 596 // card width + gap
       scrollRef.current.scrollTo({
         left: index * cardWidth,
         behavior: 'smooth',
@@ -166,51 +172,51 @@ export default function TestimonialsSection() {
         </div>
       </div>
 
-      <div className="md:container md:mx-auto">
-        <div className="md:max-w-6xl md:mx-auto">
+      {/* Mobile: contained, Desktop: left-aligned with overflow */}
+      <div className="md:ml-[calc((100vw-1152px)/2)] md:pl-4">
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
+          style={{
+            scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch',
+            scrollPaddingLeft: '16px',
+          }}
+          onScroll={handleScroll}
+        >
           <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
-            style={{
-              scrollSnapType: 'x mandatory',
-              WebkitOverflowScrolling: 'touch',
-              scrollPaddingLeft: '16px',
-            }}
-            onScroll={handleScroll}
-          >
+            className="w-4 flex-shrink-0 md:hidden"
+            style={{ scrollSnapAlign: 'none' }}
+          />
+          {testimonials.map((testimonial) => (
             <div
-              className="w-4 flex-shrink-0 md:hidden"
-              style={{ scrollSnapAlign: 'none' }}
-            />
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="flex-shrink-0 w-[calc(100vw-80px)] md:max-w-[580px]"
-                style={{ scrollSnapAlign: 'start' }}
-              >
-                <TestimonialCard
-                  name={testimonial.name}
-                  position={testimonial.position}
-                  text={testimonial.text}
-                  rating={testimonial.rating}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile pagination dots */}
-          <div className="flex md:hidden justify-center space-x-2 mt-8 mb-8">
-            {paginationDots.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                  index === currentIndex ? 'bg-teal-400' : 'bg-gray-300'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
+              key={testimonial.id}
+              data-card
+              className="flex-shrink-0 w-[calc(100vw-80px)] md:max-w-[580px]"
+              style={{ scrollSnapAlign: 'start' }}
+            >
+              <TestimonialCard
+                name={testimonial.name}
+                position={testimonial.position}
+                text={testimonial.text}
+                rating={testimonial.rating}
               />
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile pagination dots */}
+        <div className="flex md:hidden justify-center space-x-2 mt-8 mb-8">
+          {paginationDots.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                index === currentIndex ? 'bg-teal-400' : 'bg-gray-300'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
 

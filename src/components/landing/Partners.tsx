@@ -1,13 +1,12 @@
 import React from 'react'
-import Image from 'next/image'
 
 const partners = [
-  { name: 'Google', logo: '/partners/Google.png' },
-  { name: 'Facebook', logo: '/partners/facebook.png' },
-  { name: 'YouTube', logo: '/partners/YouTube.png' },
-  { name: 'Pinterest', logo: '/partners/Pinterest.png' },
-  { name: 'Twitch', logo: '/partners/Twitch.png' },
-  { name: 'Webflow', logo: '/partners/Webflow.png' },
+  { name: 'Partner 1' },
+  { name: 'Partner 2' },
+  { name: 'Partner 3' },
+  { name: 'Partner 4' },
+  { name: 'Partner 5' },
+  { name: 'Partner 6' },
 ]
 
 export default function PartnersSection() {
@@ -28,13 +27,11 @@ export default function PartnersSection() {
                     key={`first-${index}`}
                     className="flex-shrink-0 flex items-center justify-center h-16 w-48 mx-8"
                   >
-                    <div className="relative h-12 w-32  transition-all duration-300 ">
-                      <Image
-                        src={partner.logo}
+                    <div className="relative h-12 w-32 transition-all duration-300">
+                      <img
+                        src="/logo.png"
                         alt={`${partner.name} logo`}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 100px, 128px"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </div>
@@ -44,13 +41,11 @@ export default function PartnersSection() {
                     key={`second-${index}`}
                     className="flex-shrink-0 flex items-center justify-center h-16 w-48 mx-8"
                   >
-                    <div className="relative h-12 w-32  transition-all duration-300 ">
-                      <Image
-                        src={partner.logo}
+                    <div className="relative h-12 w-32 transition-all duration-300">
+                      <img
+                        src="/logo.png"
                         alt={`${partner.name} logo`}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 100px, 128px"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </div>

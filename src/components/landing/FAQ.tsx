@@ -16,7 +16,7 @@ export default function FAQSection({
   className = '',
 }: FAQSectionProps) {
   const t = useTranslations('landing.faq')
-  const [openItems, setOpenItems] = useState<number[]>([1, 2, 3, 4, 5])
+  const [openItems, setOpenItems] = useState<number[]>([1])
   const [showAll, setShowAll] = useState(false)
 
   const faqs = [
